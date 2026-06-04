@@ -1,0 +1,81 @@
+---
+title: "Auto-File and Open PDFs by Citekey"
+sidebarTitle: "PDF Management"
+description: "Automatically rename and file PDFs using the BibTeX citekey, open PDFs from Alfred, and filter entries that have associated PDF files."
+---
+
+The workflow manages PDFs located in a configured folder, matching them to BibTeX entries by citekey. You can open PDFs directly from Alfred and use the auto-file feature to rename and organize new PDFs in one step.
+
+## Setup
+
+Set the `pdf_folder` workflow variable to the absolute path of the directory where your PDFs are stored (e.g., `~/Documents/Papers`).
+
+PDFs are matched to entries by filename. The filename must:
+- Start with the **citekey** (without `@`)
+- Optionally be followed by an **underscore `_` and any additional text** (typically the title)
+- Have a **`.pdf`** extension
+
+Valid examples for citekey `Grieser2020`:
+- `Grieser2020.pdf`
+- `Grieser2020_A Study of Examples.pdf`
+
+The citekey itself **must not contain underscores**, as the underscore is used as the delimiter between citekey and title in the filename.
+
+## Visual Indicator
+
+Entries that have a matching PDF in `pdf_folder` display a `📕` emoji in the citation picker list.
+
+## Open PDF
+
+**Keyboard shortcut:** `Hyper↵` (= `⌘⌥⌃⇧↵`)
+
+Opens the matched PDF with your default PDF reader. The workflow searches `pdf_folder` recursively for any file matching `{citekey}*.pdf` (case-insensitive) and opens the first result.
+
+<Note>
+  The `Hyper` key is an artificial "fifth" modifier key equivalent to pressing `⌘⌥⌃⇧` simultaneously. You can create it using [Karabiner Elements](https://karabiner-elements.pqrs.org/), [BetterTouchTool](https://www.macupdate.com/app/mac/32953/bettertouchtool), or the [Hyperkey](https://hyperkey.app/) app.
+</Note>
+
+## Auto-File PDF
+
+The auto-file feature renames and moves a PDF you have selected in Finder to the correct location within `pdf_folder`, named after the citekey and title.
+
+**Trigger options:**
+- Via `scp` in Alfred → select **Auto-file PDF** with the target entry chosen
+- Via Alfred Universal Action when a PDF file is selected in Finder
+
+**What the auto-file feature does:**
+
+1. Reads the target **citekey** from the selected picker entry.
+2. Extracts the **author prefix** from the citekey (everything before the year digits) and the **first letter** of the citekey for subfolder organization.
+3. Reads the **title** from the matching entry in the `.bib` file.
+4. Constructs the destination path: `{pdf_folder}/{FirstLetter}/{Author}/{citekey}_{title}.pdf`
+   - The title is truncated to 50 characters and sanitized (special characters replaced or removed).
+5. **Moves** the Finder-selected PDF to the computed path, creating subdirectories as needed.
+6. **Opens the destination folder** in Finder so you can verify the result.
+
+**Example:** For citekey `Grieser2023` with title "A Study of Examples", the PDF is filed at:
+```
+{pdf_folder}/G/Grieser/Grieser2023_A Study of Examples.pdf
+```
+
+<Warning>
+  If a PDF file already exists at the computed destination path, the auto-file operation is **aborted** and the existing file's location is revealed in Finder. Delete the existing PDF first, then run auto-file again.
+</Warning>
+
+## Filter by PDF
+
+Add `pdf` to any search query to show **only** entries that have a PDF filed via the auto-file feature. This filter can be combined with other search terms.
+
+**Examples:**
+
+| Query | Result |
+|---|---|
+| `pdf` | All entries with an auto-filed PDF |
+| `pdf grieser` | Entries by Grieser with a PDF |
+| `pdf 2020 #sociology` | 2020 sociology entries with a PDF |
+
+## Attachment Field (`📎`)
+
+The `📎` indicator is distinct from `📕`. It appears when a BibTeX entry has a `file`, `local-url`, or `attachment` field pointing to a file path — regardless of whether the PDF is in `pdf_folder`.
+
+Use `⌃⌥⌘↵` to open the attachment directly. See [Bibliography Actions](/advanced/bibliography-actions#open-attachment) for full details on how attachment paths are resolved.

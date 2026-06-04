@@ -1,0 +1,140 @@
+---
+title: "Integrate Supercharged Citation Picker with Other Apps"
+sidebarTitle: "Integrations"
+description: "Set up integrations with Zotero, BibDesk, VS Code, Obsidian, Pandoc, and AlfredExtraPane for a seamless academic workflow on macOS."
+---
+
+The Supercharged Citation Picker integrates with common academic apps and tools on macOS. Most integrations require only a single workflow variable to be set in the [Configure Workflow](/configuration/workflow-settings) panel.
+
+---
+
+## Zotero
+
+Set `open_entries_in` to `Zotero` in the workflow configuration.
+
+Pressing `⇧↵` on any entry opens it directly in Zotero using the URI:
+
+```
+zotero://select/items/bbt:{citekey}
+```
+
+The `bbt:` prefix ensures the item is located in your personal Zotero library using the Better BibTeX citekey.
+
+**Requirements:**
+- [Zotero](https://www.zotero.org/) installed
+- [Better BibTeX for Zotero](https://retorque.re/zotero-better-bibtex/) plugin installed and your library exported as a live `.bib` file
+
+<Warning>
+  Adding or removing entries via the workflow does **not** sync back to Zotero when using Better BibTeX. Better BibTeX performs a one-way sync only (Zotero → `.bib` file). Any entries added or deleted through the citation picker will be overwritten the next time Zotero syncs the `.bib` file.
+</Warning>
+
+---
+
+## BibDesk
+
+Set `open_entries_in` to `BibDesk` in the workflow configuration.
+
+Pressing `⇧↵` opens the entry in [BibDesk](https://bibdesk.sourceforge.io/) using its native URI scheme:
+
+```
+x-bdsk://{citekey}
+```
+
+**Requirements:**
+- [BibDesk](https://bibdesk.sourceforge.io/) installed
+
+---
+
+## VS Code
+
+Set `open_entries_in` to `VS Code` in the workflow configuration.
+
+Pressing `⇧↵` opens the `.bib` file in VS Code at the exact line where the entry's citekey appears, using:
+
+```sh
+code -g /path/to/library.bib:{lineNo}
+```
+
+**Requirements:**
+- [VS Code](https://code.visualstudio.com/) installed
+- The `code` command available in your `PATH` (install via VS Code's **Shell Command: Install 'code' command in PATH** action)
+
+---
+
+## Sublime Text
+
+Set `open_entries_in` to `Sublime` in the workflow configuration.
+
+Pressing `⇧↵` opens the `.bib` file in Sublime Text at the entry's line number using the full binary path:
+
+```sh
+/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl /path/to/library.bib:{lineNo}
+```
+
+Using the full path ensures the integration works even if `subl` has not been added to your shell `PATH`.
+
+**Requirements:**
+- [Sublime Text](https://www.sublimetext.com/) installed at the default `/Applications/` location
+
+---
+
+## Neovim
+
+Set `open_entries_in` to `Neovim` in the workflow configuration.
+
+Pressing `⇧↵` opens the entry via the default app registered for `.bib` files, passing the line number as an environment variable (`LINE={lineNo}`). Apps that can parse this argument (such as terminal-based editors launched via a helper) will open at the correct position.
+
+---
+
+## Obsidian
+
+Set `literature_note_folder` to a path **inside your Obsidian vault** in the workflow configuration. No additional setting is required — Obsidian detection is fully automatic.
+
+When you press `⌃⌥↵` to open or create a literature note, the workflow checks Obsidian's vault registry at:
+
+```
+~/Library/Application Support/obsidian/obsidian.json
+```
+
+If the literature note's path falls within a registered Obsidian vault, the note is opened in Obsidian directly via:
+
+```
+obsidian://open?path={encoded-note-path}
+```
+
+Otherwise, the note opens in the system default Markdown editor.
+
+**Requirements:**
+- [Obsidian](https://obsidian.md/) installed
+- `literature_note_folder` pointing to a folder inside an Obsidian vault
+
+---
+
+## Pandoc
+
+Pandoc is required for two features:
+
+1. **Formatted bibliography paste** (`⌘⌥↵`) — pastes a fully formatted bibliographic entry in the configured citation style
+2. **Formatted single-entry citation format** — the "Formatted single entry" citation mode selected via `scp` → Change citation format
+
+**Install Pandoc:** https://pandoc.org/installing.html
+
+**Customize the citation style:**
+
+Set `csl_for_pandoc` to the path of any `.csl` file. The default style is **APA 7th edition**, bundled with the workflow at `support/apa-7th.csl`.
+
+You can download additional `.csl` styles using the built-in style searcher: type `scp` in Alfred and select **Search & download .csl files**. Downloaded files are saved to the folder specified by `csl_folder` (default: `~/.pandoc/csl/`).
+
+---
+
+## AlfredExtraPane
+
+Install [AlfredExtraPane](https://github.com/mr-pennyworth/alfred-extra-pane) to enable live URL preview of entries directly inside the Alfred window — without opening a browser.
+
+The citation picker sets the `quicklookurl` field for every entry that has a URL or DOI. AlfredExtraPane picks this up automatically and renders the page in a side panel alongside the Alfred results list.
+
+**Requirements:**
+- [AlfredExtraPane](https://github.com/mr-pennyworth/alfred-extra-pane) installed and configured
+- Entry must have a `url` field or a `doi` field (which generates `https://doi.org/{doi}` as the URL)
+
+You can also preview a URL without AlfredExtraPane by pressing `⌘Y` on any entry to open a standard macOS QuickLook window for that URL.

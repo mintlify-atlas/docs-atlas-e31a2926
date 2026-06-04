@@ -1,0 +1,97 @@
+---
+title: "Citation Formats: Pandoc, LaTeX, Org-Mode, and More"
+sidebarTitle: "Citation Formats"
+description: "Configure the output format for citations: Pandoc, LaTeX, Multi-Markdown, org-mode, eta templates, iA Writer, wikilinks, tags, and bare citekeys."
+---
+
+The Supercharged Citation Picker can output citations in many different formats to match whatever writing environment you use. Use the keyword `scp` in Alfred and select **Change citation format** to switch between them at any time.
+
+<Tip>
+  The `scp` keyword is a mnemonic for **S**upercharged **C**itation **P**icker — the same keyword provides access to all auxiliary features of the workflow.
+</Tip>
+
+## Available Formats
+
+The table below lists every supported format, an example of what it outputs for a citekey `Grieser2020`, and notes about feature support.
+
+| Format | Example output | Notes |
+|--------|---------------|-------|
+| **Pandoc** (default) | `[@Grieser2020]` | Supports multi-cite and page numbers |
+| **LaTeX** | `\autocite{Grieser2020}` | Page numbers are placed before the citekey; multi-cite disabled |
+| **Org mode** | `[cite:@Grieser2020]` | Supports multi-cite and page numbers |
+| **Multi-Markdown** | `[#Grieser2020]` | Page numbers are placed before the citekey; multi-cite disabled |
+| **eta template** | `{% cite Grieser2020 --prefix %}` | Supports multi-cite |
+| **iA Writer** | `[^Grieser2020]` | Supports multi-cite |
+| **Wikilink** | `[[Grieser2020]]` | No page numbers; no inline citations |
+| **Tag** | `#Grieser2020` | No page numbers; no inline citations |
+| **Bare citekey** | `Grieser2020` | No page numbers; no inline citations |
+| **Bracketed citekey** | `(Grieser2020)` | Supports multi-cite |
+| **Formatted single entry** | Full formatted reference | Requires [Pandoc](https://pandoc.org/installing.html) to be installed; citation style configurable in workflow settings (default: APA 7th) |
+
+<Note>
+  Not all formats support every citation action. Page numbers and inline citations are not available for LaTeX (which places page numbers differently), Multi-Markdown, wikilinks, tags, and bare citekeys.
+</Note>
+
+## Format Examples
+
+<CodeGroup>
+
+```text Pandoc
+[@Grieser2020]
+[@Grieser2020, p. 42]
+[@Grieser2020; @Smith2019]
+[@Grieser2020, p. 12; @Smith2019, p. 34]
+```
+
+```text LaTeX
+\autocite{Grieser2020}
+\autocite[p. 42]{Grieser2020}
+```
+
+```text Org mode
+[cite:@Grieser2020]
+[cite:@Grieser2020, p. 42]
+[cite:@Grieser2020; @Smith2019]
+```
+
+```text Multi-Markdown
+[#Grieser2020]
+[[p. 42]#Grieser2020]
+```
+
+```text eta template
+{% cite Grieser2020 --prefix %}
+{% cite Grieser2020; Smith2019 --prefix %}
+```
+
+```text iA Writer
+[^Grieser2020]
+[^Grieser2020; ^Smith2019]
+```
+
+```text Wikilink
+[[Grieser2020]]
+```
+
+```text Tag
+#Grieser2020
+```
+
+```text Bare citekey
+Grieser2020
+```
+
+```text Bracketed citekey
+(Grieser2020)
+(Grieser2020, Smith2019)
+```
+
+</CodeGroup>
+
+## Adding a New Format
+
+If there is a citation syntax you need that is not listed above, you are welcome to open a [Feature Request](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/issues/new?assignees=&labels=enhancement&template=feature_request.yml&title=Feature+Request%3A+) or submit a pull request to the [file that defines the citation formats](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/blob/main/scripts/toggle-citation-format.js).
+
+<Note>
+  Due to a technical restriction in how Alfred stores workflow configuration variables, you may need to re-select your citation style once after updating the workflow to a new version.
+</Note>

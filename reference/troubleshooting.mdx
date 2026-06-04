@@ -1,0 +1,118 @@
+---
+title: "Troubleshooting the Supercharged Citation Picker"
+sidebarTitle: "Troubleshooting"
+description: "Solutions for common issues: citation picker not opening, entries not showing, PDF not found, literature notes not created, and Zotero sync conflicts."
+---
+
+If something isn't working as expected, this page covers the most common issues and their solutions. Use the sections below to find the symptom that matches your situation.
+
+<AccordionGroup>
+
+<Accordion title="The citation picker opens but shows no entries">
+If the picker launches but the list is empty:
+
+- Verify that `bibtex_library_path` is set to the correct path of an **existing** `.bib` file. Open the workflow in Alfred Preferences and double-check the value.
+- Open the `.bib` file in a text editor and confirm it is not empty and contains at least one `@`-prefixed entry.
+- Try forcing a fresh parse of the library: trigger the `scp` keyword in Alfred and select **Force Buffer Reload**.
+- For deeper diagnosis, open Alfred's built-in debugger. Run the citation picker keyword, then hold <kbd>⌘</kbd> while pressing a result — or open the workflow in Alfred Preferences and click the debug icon — to see any JavaScript error output from the buffer-building script.
+</Accordion>
+
+<Accordion title="Entries are outdated / new entries not appearing">
+The citation picker caches a parsed buffer of your library for performance. The buffer is automatically invalidated and rebuilt when the `.bib` file's **modification time** changes:
+
+- If you have recently added or edited entries and they are not appearing, the file's modification timestamp may not have been updated (this can happen with some sync tools or editors that write atomically).
+- To force an immediate reload regardless of modification time, trigger the `scp` keyword and select **Force Buffer Reload**.
+- Confirm that your reference manager or text editor is saving the `.bib` file in a way that actually touches the modification time (most do, but some cloud-sync tools may not).
+</Accordion>
+
+<Accordion title="PDF not found for an entry that shows 📕">
+The `📕` indicator relies on finding a PDF **by filename** in the folder set in `pdf_folder`. If the indicator is shown but the PDF cannot be opened, or if you expect the indicator but it is missing:
+
+- Check that `pdf_folder` points to the correct directory in the workflow configuration.
+- Verify the PDF filename exactly matches one of the two accepted patterns:
+  - `{citekey}.pdf`
+  - `{citekey}_{anything}.pdf`
+- The citekey portion of the filename must **not** include the `@` symbol.
+- Citekeys themselves must not contain underscores, as underscores are used as the delimiter between the citekey and the optional suffix.
+- The `📕` indicator only reflects PDFs located in `pdf_folder` that are filed by citekey. PDFs referenced inside the BibTeX entry's own `file`, `local-url`, or `attachment` fields are covered by the `📎` indicator instead — those can be opened with <kbd>⌃⌥⌘↵</kbd>.
+</Accordion>
+
+<Accordion title="Literature notes not creating or not opening in Obsidian">
+If <kbd>⌃⌥↵</kbd> (open/create literature note) does nothing or shows an error:
+
+- Confirm that the path in `literature_note_folder` exists on disk and is **writable** by your user account.
+- If the folder was recently created or renamed, try the `scp` → **Force Buffer Reload** command so the workflow re-checks the folder.
+- **For Obsidian integration:** The workflow detects whether the literature note folder is inside an Obsidian vault by reading `~/Library/Application Support/obsidian/obsidian.json`. Ensure:
+  - Obsidian has been launched at least once so this file exists.
+  - The vault containing your `literature_note_folder` is listed in that file.
+  - The folder path comparison is **case-insensitive** (matching macOS filesystem behaviour), so capitalisation differences should not cause a mismatch.
+- If the folder is not inside any registered vault, the note will be opened in your system's default Markdown editor instead of Obsidian.
+</Accordion>
+
+<Accordion title="Formatted bibliography / single-entry paste not working">
+The **Paste full bibliographic entry** action (<kbd>⌘⌥↵</kbd>) and the **Formatted single entry** citation format both require [Pandoc](https://pandoc.org/installing.html):
+
+- Run `pandoc --version` in Terminal to confirm Pandoc is installed and on your PATH.
+- The workflow searches for Pandoc in these directories, in order:
+  - `/usr/local/lib`
+  - `/usr/local/bin`
+  - `/opt/homebrew/bin/`
+- If Pandoc is installed elsewhere (for example via a different package manager or a non-standard prefix), you may need to create a symlink into one of the above paths:
+  ```bash
+  ln -s "$(which pandoc)" /usr/local/bin/pandoc
+  ```
+- The citation style used for formatting can be customised in the workflow configuration (default: APA 7th edition). Ensure the configured `.csl` file path is valid.
+</Accordion>
+
+<Accordion title="Adding entries via DOI or ISBN returns an error">
+The DOI/ISBN entry-addition feature makes outbound HTTP requests. If it fails:
+
+- Check your network connection — the workflow contacts these services:
+  - `doi.org` / CrossCite for DOI metadata
+  - `openlibrary.org` for ISBN metadata
+  - `googleapis.com` for additional book data
+- Verify the format of your input:
+  - **DOIs** must match the CrossRef pattern: `10.XXXX/...` (or a full URL such as `https://doi.org/10.XXXX/...`).
+  - **ISBNs** are 9–40 digits and may include hyphens (e.g., `978-3-16-148410-0`).
+- Some valid DOIs are not registered with the CrossCite metadata service. If a DOI lookup fails, try pasting the full `https://doi.org/…` URL instead.
+- Note: Adding or removing entries does **not** work reliably when using the [BetterBibTeX Zotero Plugin](https://retorque.re/zotero-better-bibtex/) — see the Zotero sync entry below.
+</Accordion>
+
+<Accordion title="Better BibTeX / Zotero sync conflicts">
+The Supercharged Citation Picker reads and modifies `.bib` files **directly on disk**. The [BetterBibTeX plugin](https://retorque.re/zotero-better-bibtex/) performs a **one-way sync** from Zotero to the `.bib` file. This creates a conflict:
+
+- Any entries added or deleted by the citation picker will be **overwritten** the next time Zotero syncs.
+- There is no built-in two-way sync; BetterBibTeX is not designed to propagate `.bib` file changes back into Zotero.
+
+**Workarounds:**
+- Use a **separate** `.bib` file for manually managed entries that is not tracked by Zotero/BetterBibTeX.
+- Accept that manual additions will be lost on the next Zotero sync, and manage all entries through Zotero instead.
+</Accordion>
+
+<Accordion title="Citation style not persisting after a workflow update">
+After updating to a new version of the Supercharged Citation Picker, you may find that your chosen citation format has reverted to the default (Pandoc).
+
+This is a known limitation caused by Alfred's handling of workflow environment variables during updates. **To fix it**, trigger the `scp` keyword and select **Change citation format**, then re-select your preferred format.
+
+There is no automatic migration of this setting between workflow versions.
+</Accordion>
+
+<Accordion title="⇧↵ (reveal in app) not working for second library entries">
+The **Reveal in app** action (<kbd>⇧↵</kbd>) — which opens the entry in Zotero, BibDesk, Neovim, VS Code, or Sublime Text depending on your `open_entries_in` setting — is currently only implemented for the **primary** library.
+
+For entries sourced from the secondary library (indicated by `2️⃣`), the <kbd>⇧↵</kbd> action is disabled and will show a message confirming it is not yet supported. This is a known limitation with no workaround at this time.
+</Accordion>
+
+</AccordionGroup>
+
+## Getting Help
+
+If none of the above resolves your issue, please open a bug report or feature request on GitHub:
+
+[**Open an issue on GitHub →**](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/issues/new/choose)
+
+When reporting a bug, it helps to include:
+- Your macOS version and Alfred version
+- The workflow version (visible in Alfred Preferences → Workflows)
+- Any error output from Alfred's debugger
+- A minimal example `.bib` entry that reproduces the problem (with personal data removed)

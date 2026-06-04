@@ -1,0 +1,89 @@
+---
+title: "Paste Formatted Bibliographies and Manage Entries"
+sidebarTitle: "Bibliography Actions"
+description: "Paste single formatted references or full bibliographic entries using Pandoc and any CSL style, and reveal or delete entries from your BibTeX file."
+---
+
+Beyond inserting citekeys, the Supercharged Citation Picker lets you paste fully rendered bibliographic text and manage entries directly — all without leaving Alfred.
+
+## Paste Formatted Single Entry
+
+**Keyboard shortcut:** `⌘⌥↵`
+
+Generates a complete, human-readable reference for the selected entry using [Pandoc](https://pandoc.org) and pastes it at the cursor. For example:
+
+```
+Grieser, C. (2023). Supercharged Citation Picker [Computer software].
+https://github.com/chrisgrieser/alfred-bibtex-citation-picker
+```
+
+How it works under the hood: the script builds a minimal Markdown document with `suppress-bibliography: true` and pipes it through `pandoc --citeproc`, producing only the inline citation text, then pastes the result.
+
+**Requirements and configuration:**
+
+- [Pandoc](https://pandoc.org/installing.html) must be installed and available on `PATH`.
+- The citation style is controlled by the `csl_for_pandoc` workflow variable. Set it to the path of any `.csl` file. If the path is unset or the file is missing, the bundled **APA 7th edition** style (`./support/apa-7th.csl`) is used as a fallback.
+- You can also select **"Formatted single entry"** as your active citation format via `scp` → **Change citation format**. When this format is active, pressing the standard `↵` key pastes the formatted reference instead of a citekey.
+
+## Paste Full Bibliography
+
+Also triggered with `⌘⌥↵` when the citation format is set to **"Formatted single entry"** for a whole-bibliography render.
+
+The full-bibliography variant uses `nocite` front matter so Pandoc outputs a standalone references section rather than an inline citation, giving you the complete formatted reference block for the entry as it would appear at the end of a document.
+
+Both scripts share the same CSL and library configuration, so whichever `.csl` file you have set in `csl_for_pandoc` applies consistently to both outputs.
+
+<Note>
+  Pandoc must be installed for both formatted-output features to work. Download it at [pandoc.org/installing.html](https://pandoc.org/installing.html). The workflow adds `/usr/local/bin` and `/opt/homebrew/bin` to `PATH` automatically, so a standard Homebrew install is detected without extra configuration.
+</Note>
+
+## Reveal Entry in App
+
+**Keyboard shortcut:** `⇧↵`
+
+Opens your BibTeX file at the line of the selected entry in the editor configured via the `open_entries_in` workflow variable. Supported apps:
+
+- **BibDesk**
+- **Zotero**
+- **VS Code**
+- **Sublime Text**
+- **Neovim**
+- Default `.bib` app (fallback)
+
+<Note>
+  Reveal in app does **not** work for entries from the secondary library. See [Dual Library](/advanced/dual-library) for details.
+</Note>
+
+## Delete Entry
+
+**Keyboard shortcut:** `⌘fn↵`
+
+Permanently removes the selected entry from the `.bib` file. The deletion uses `sed` to match from the line containing `{citekey,` down to the closing `}`, so it works with BibTeX formatting from BibDesk, Bookends, and bibtex-tidy.
+
+A `.bak` backup file is created automatically before deletion. If exactly one entry is removed, the backup is moved to the Trash. If the count differs from 1, the backup is kept in the library folder so you can recover manually.
+
+<Warning>
+  Deleting an entry cannot be undone through the workflow. Once confirmed, the entry is gone from the `.bib` file. The automatic `.bak` backup is your only safety net — keep it until you are certain the deletion was correct.
+</Warning>
+
+## Large Type Preview
+
+**Keyboard shortcut:** `⌘L`
+
+Displays the entry's full, unabridged title, abstract, and all keywords in a large Alfred overlay. Useful for previewing long titles or abstracts that are truncated in the normal picker list.
+
+## QuickLook URL Preview
+
+**Keyboard shortcut:** `⌘Y`
+
+Opens the entry's URL (or DOI URL, if no direct URL is present) in a macOS QuickLook window without leaving Alfred.
+
+## Open Attachment
+
+**Keyboard shortcut:** `⌃⌥⌘↵`
+
+Opens the file referenced in the BibTeX entry's `file`, `local-url`, or `attachment` field using the system default app. The workflow decodes percent-encoded URIs, strips `file://localhost` prefixes, expands `~`, and validates that the file exists before attempting to open it.
+
+If multiple attachments are listed in the field (separated by `;`), only the **first** attachment is opened.
+
+The `📎` icon in the picker indicates that an entry has an attachment field set. This is separate from the `📕` PDF indicator, which tracks PDFs managed by the [auto-file feature](/advanced/pdf-management).

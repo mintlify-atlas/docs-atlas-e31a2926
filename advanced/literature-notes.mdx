@@ -1,0 +1,65 @@
+---
+title: "Create and Open Literature Notes from BibTeX Entries"
+sidebarTitle: "Literature Notes"
+description: "Automatically create Markdown literature notes named by citekey, open them in Obsidian or your default editor, and filter entries that have notes."
+---
+
+The Supercharged Citation Picker can create and open Markdown literature notes for any BibTeX entry. Notes are named exactly after their citekey, making them trivially linkable from citations in your writing.
+
+## Setup
+
+Set the `literature_note_folder` workflow variable to the absolute path of the directory where your literature notes live (e.g., `~/Documents/Notes/Literature`).
+
+Notes must be:
+- **`.md` files** (Markdown)
+- **Named exactly like the citekey**, with no extra prefix or suffix (e.g., `Grieser2020.md` for citekey `Grieser2020`)
+
+## Visual Indicator
+
+Entries that have a matching literature note in the configured folder display a `📓` emoji in the citation picker list, so you can see at a glance which entries already have notes.
+
+## Open or Create a Note
+
+**Keyboard shortcut:** `⌃⌥↵`
+
+- If a note **already exists**, it is opened immediately.
+- If no note exists, a **new file is created** with the following YAML front matter template, then opened:
+
+```markdown
+---
+tags: 
+aliases:
+---
+
+```
+
+The file is written to `{literature_note_folder}/{citekey}.md`.
+
+## Obsidian Integration
+
+If `literature_note_folder` (or any of its parent directories) is inside an [Obsidian](https://obsidian.md/) vault, the workflow detects this automatically by reading Obsidian's vault registry at `~/Library/Application Support/obsidian/obsidian.json`.
+
+When the note is inside a vault:
+- Obsidian is brought to the foreground.
+- The note is opened via the `obsidian://open?path=…` URI scheme, using the full absolute path.
+- A short delay is applied after creating a new file so Obsidian can index it before the open command is sent.
+
+When the note is **not** inside a vault, the file is opened with the system default Markdown app (`open` command).
+
+<Tip>
+  Obsidian vault detection checks all parent paths, not just the immediate folder. If your vault uses a flat structure and all notes live directly in the vault root, you can still set `literature_note_folder` to any subfolder within the vault and Obsidian will open notes correctly. The detection will match any ancestor directory that Obsidian recognizes as a vault.
+</Tip>
+
+## Filter by Literature Note
+
+Add `*` anywhere in your search query to show **only** entries that have an associated literature note. This filter can be freely combined with all other search terms.
+
+**Examples:**
+
+| Query | Result |
+|---|---|
+| `*` | All entries that have a literature note |
+| `* grieser` | Entries by Grieser that have a literature note |
+| `* 2020 #cognition` | 2020 entries tagged "cognition" that have a literature note |
+
+See [Smart Queries](/quickstart#search) for the full range of combinable query types.

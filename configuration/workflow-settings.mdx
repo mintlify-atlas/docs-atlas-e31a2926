@@ -1,0 +1,133 @@
+---
+title: "Configure Supercharged Citation Picker Workflow Settings"
+sidebarTitle: "Workflow Settings"
+description: "Reference for all workflow environment variables: library paths, PDF folder, literature note folder, citation style, Pandoc CSL, search behavior, and editor integration."
+---
+
+All configuration is done through Alfred's workflow environment variables, accessible via the **[x]** button in the workflow editor or the **Configure Workflow** panel.
+
+<Tip>
+  Use `~` in path variables to reference your home directory. This keeps your configuration portable across machines and avoids hard-coding absolute paths like `/Users/yourname/...`.
+</Tip>
+
+## Library Paths
+
+<ParamField query="bibtex_library_path" type="string" required>
+  Absolute path to your primary BibTeX library file (`.bib`). Supports `~` for the home directory.
+
+  Example: `~/Documents/references.bib`
+</ParamField>
+
+<ParamField query="secondary_library_path" type="string">
+  Absolute path to an optional secondary BibTeX library file (`.bib`). When set, entries from both libraries are shown together in the picker. Secondary-library entries are marked with a 2️⃣ icon.
+
+  Example: `~/Documents/secondary-refs.bib`
+</ParamField>
+
+## Note and PDF Folders
+
+<ParamField query="literature_note_folder" type="string">
+  Path to the folder where Markdown literature notes are stored. Notes must be named **exactly** after the citekey (e.g., `Grieser2022.md`). Entries that have a matching note are marked with a 📓 icon.
+
+  When this folder resides inside an [Obsidian](https://obsidian.md/) vault, literature notes are automatically opened in Obsidian instead of the default text editor.
+
+  Example: `~/Documents/literature-notes`
+</ParamField>
+
+<ParamField query="pdf_folder" type="string">
+  Path to the folder where PDFs are stored. PDFs must be named after the citekey, optionally followed by an underscore and additional text — for example `Grieser2022.pdf` or `Grieser2022_some-title.pdf`. Entries with a matching PDF are marked with a 📕 icon.
+
+  This folder is also used by the auto-file PDF feature.
+
+  Example: `~/Documents/papers`
+</ParamField>
+
+## Citation Style and Pandoc
+
+<ParamField query="csl_for_pandoc" type="string">
+  Path to a `.csl` (Citation Style Language) file used by Pandoc when generating formatted bibliographies (`⌘⌥↵`) or formatted single-entry citations.
+
+  Defaults to the APA 7th edition style bundled with the workflow.
+
+  Example: `~/.pandoc/csl/chicago-author-date.csl`
+</ParamField>
+
+<ParamField query="csl_folder" type="string">
+  Path to the folder where the **Citation Style Search** feature (`scp` → "Search & download .csl files") saves downloaded `.csl` files.
+
+  Default: `~/.pandoc/csl/`
+</ParamField>
+
+## Editor Integration
+
+<ParamField query="open_entries_in" type="string">
+  Determines which application is used to reveal an entry when you press `⇧↵`. Supported values:
+
+  | Value | Behavior |
+  |---|---|
+  | `BibDesk` | Opens via `x-bdsk://{citekey}` URI |
+  | `Zotero` | Opens via `zotero://select/items/bbt:{citekey}` URI (requires Better BibTeX) |
+  | `VS Code` | Opens the `.bib` file at the entry's line number using `code -g` |
+  | `Sublime` | Opens via Sublime Text's `subl` binary at the entry's line number |
+  | `Neovim` | Opens via the default app with a line-number environment variable |
+  | `default app for .bib files` | Opens the library file in whatever app is registered for `.bib` files |
+
+  <Note>
+    Opening entries from the **secondary library** is not yet supported — `⇧↵` only works for entries in the primary library.
+  </Note>
+</ParamField>
+
+## Search Behavior
+
+<ParamField query="match_authors_in_etal" type="string">
+  Controls which authors are searchable for entries listed as "et al." Accepted values:
+
+  - `1` — Match **all** authors in the entry, even those hidden behind "et al."
+  - `0` (default) — Match only the **first** author displayed
+
+  Example: `1`
+</ParamField>
+
+<ParamField query="match_year_type" type="string">
+  Controls which year format is matched when you type a year in the search query. Accepted values:
+
+  - `full` — Match the 4-digit year (e.g., `2022`)
+  - `short` — Match the 2-digit year (e.g., `22`)
+  - `full, short` — Match both formats simultaneously (comma-separated)
+
+  Example: `full, short`
+</ParamField>
+
+## Display
+
+<ParamField query="alfred_bar_width" type="string">
+  Maximum number of characters to show in an entry title before it is truncated with an ellipsis (`…`). Set this to match the width of your Alfred window.
+
+  Example: `60`
+</ParamField>
+
+## Internal Variables
+
+<ParamField query="buffer_reload" type="string">
+  Internal flag. When set to `true`, forces the citation picker to rebuild its entry cache (buffer) on the next run. After the reload completes, the workflow resets this variable automatically.
+
+  To trigger a manual reload interactively, type `scp` in Alfred and select **Force Buffer Reload**.
+</ParamField>
+
+---
+
+## Buffer Invalidation
+
+The picker caches the parsed entry list in a buffer file for speed (a full reload of 4,000 entries takes ~200 ms). The buffer is **automatically invalidated and rebuilt** whenever any of the following changes:
+
+| Trigger | What changed |
+|---|---|
+| Primary library modified | `.bib` file timestamp newer than buffer |
+| Secondary library modified | Secondary `.bib` file timestamp newer than buffer |
+| Literature note folder modified | Folder timestamp newer than buffer |
+| PDF folder modified | Folder timestamp newer than buffer |
+| Workflow preferences updated | `prefs.plist` timestamp newer than buffer |
+| Workflow version changed | New release installed |
+| `buffer_reload` set to `true` | Manually requested reload |
+
+To force an immediate reload at any time, open Alfred, type `scp`, and select **Force Buffer Reload**.

@@ -1,0 +1,55 @@
+---
+title: "Search and Install CSL Citation Styles"
+sidebarTitle: "CSL Styles"
+description: "Search the official CSL style repository, download any .csl file to your local folder, and apply it for formatted bibliography output via Pandoc."
+---
+
+The workflow integrates with the official [Citation Style Language](https://citationstyles.org/) (CSL) styles repository, letting you find and download any citation style directly from Alfred without opening a browser.
+
+## Trigger
+
+Type `scp` in Alfred and select **Citation Style Search**.
+
+## How It Works
+
+When you open the CSL search, the workflow fetches the complete list of `.csl` files from the GitHub API for the [`citation-style-language/styles`](https://github.com/citation-style-language/styles) repository. Each result shows:
+
+- The **style name** (derived from the filename with hyphens replaced by spaces and title-cased)
+- Whether the style is **`[dependent]`** — meaning it relies on a parent style for its formatting rules rather than defining its own
+- Whether the style is **already installed locally** (`✅`)
+
+Results are **cached for 24 hours** with loose reload enabled, so the list loads instantly on repeat visits and refreshes automatically in the background.
+
+## Indicators in the Picker
+
+| Indicator | Meaning |
+|---|---|
+| `✅` | The `.csl` file is already downloaded to your local `csl_folder` |
+| `[dependent]` | This style depends on a parent independent style |
+| `↵: Update local .csl file.` (subtitle) | Pressing Enter will re-download and overwrite the local copy |
+
+## Downloading a Style
+
+Press `↵` on any result to download the `.csl` file. It is saved to the folder specified by the `csl_folder` workflow variable.
+
+**Default location:** `~/.pandoc/csl/`
+
+You can change this by updating `csl_folder` in the workflow configuration panel.
+
+## Applying a Downloaded Style
+
+After downloading a style, set the `csl_for_pandoc` workflow variable to the **full path** of the `.csl` file you want to use. For example:
+
+```
+~/.pandoc/csl/chicago-author-date.csl
+```
+
+This style is then used by both the [Paste Formatted Single Entry](/advanced/bibliography-actions#paste-formatted-single-entry) and [Paste Full Bibliography](/advanced/bibliography-actions#paste-full-bibliography) features.
+
+## Default Style
+
+If `csl_for_pandoc` is not set or the file it points to does not exist, the workflow automatically falls back to the **APA 7th edition** style bundled with the workflow at `./support/apa-7th.csl`.
+
+<Tip>
+  Both `csl_folder` (where downloaded styles are saved) and `csl_for_pandoc` (which style is actively used for output) are configured independently in the workflow configuration panel. You can maintain a large local collection of styles in `csl_folder` and switch between them by updating `csl_for_pandoc` as needed.
+</Tip>

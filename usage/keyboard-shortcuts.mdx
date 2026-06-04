@@ -1,0 +1,83 @@
+---
+title: "Keyboard Shortcuts for the Supercharged Citation Picker"
+sidebarTitle: "Keyboard Shortcuts"
+description: "Complete reference of Alfred modifier key combinations for inserting citations, opening URLs, managing PDFs, and accessing literature notes."
+---
+
+All shortcuts listed below are Alfred modifier keys pressed while a search result is highlighted in the citation picker. No external app is required — the picker works system-wide in any text field.
+
+## Triggering the Picker
+
+| Trigger | Action |
+|---------|--------|
+| Hotkey (user-configured) | Open the citation picker from any text field in any app |
+| Keyword `ct` | Open the citation picker from Alfred |
+| Keyword `cc` | Alternative keyword to open the citation picker |
+
+You can assign a custom hotkey by double-clicking the hotkey trigger in the Alfred workflow window.
+
+## Citation Insertion
+
+| Shortcut | Action |
+|----------|--------|
+| <kbd>↵</kbd> | Paste the citekey in the currently configured citation format |
+| <kbd>⌥↵</kbd> | Add another citation to the same bracket (multi-cite) |
+| <kbd>⇧⌘↵</kbd> | Paste as an inline citation (no surrounding brackets), e.g. `@Grieser2022` |
+| <kbd>⌘↵</kbd> | Open a page-number prompt before pasting |
+
+When the page-number prompt is open, the following confirmations are available:
+
+| Confirmation | Action |
+|---|---|
+| <kbd>⌥↵</kbd> | Paste with page number, then continue adding citations |
+| <kbd>⌘↵</kbd> | Paste with page number and close |
+| <kbd>⇧⌘↵</kbd> | Paste as inline citation with page number, e.g. `@Grieser2022 [p. 42]` |
+
+## URL Actions
+
+| Shortcut | Action |
+|----------|--------|
+| <kbd>⌃↵</kbd> | Open the entry's URL in the default browser (falls back to DOI URL if no `url` field is present) |
+| <kbd>⌘C</kbd> | Copy the entry's URL to the clipboard |
+
+## Bibliography & Entry Management
+
+| Shortcut | Action |
+|----------|--------|
+| <kbd>⇧↵</kbd> | Reveal the entry in Zotero, BibDesk, VS Code, Sublime Text, or Neovim — depending on the `open_entries_in` workflow setting |
+| <kbd>⌘⌥↵</kbd> | Paste the full formatted bibliographic entry (requires [Pandoc](https://pandoc.org/installing.html); citation style configurable in workflow settings, default: APA 7th) |
+| <kbd>⌘L</kbd> | Large Type overlay: show the full unabridged title, abstract, and complete keyword list |
+| <kbd>⌘fn↵</kbd> | Delete the entry from the BibTeX file (⚠️ irreversible — cannot be undone) |
+| <kbd>⌘Y</kbd> | QuickLook preview of the entry's URL |
+
+<Note>
+  <kbd>⇧↵</kbd> to reveal an entry in an external app does **not** work for entries from the secondary library.
+</Note>
+
+## Literature Notes
+
+| Shortcut | Action |
+|----------|--------|
+| <kbd>⌃⌥↵</kbd> | Open the literature note for the selected entry. If the note file is located inside an [Obsidian](https://obsidian.md/) vault, it is opened directly in Obsidian instead of the default text editor. If no literature note exists yet, a new one is created in the configured folder. |
+
+## PDF Management
+
+| Shortcut | Action |
+|----------|--------|
+| <kbd>Hyper↵</kbd> | Open the associated PDF in the default PDF reader. The picker looks for a PDF named `{citekey}.pdf` or `{citekey}_{anything}.pdf` in the configured PDF folder. |
+| <kbd>⌃⌥⌘↵</kbd> | Open the attachment file referenced in the BibTeX `file`, `local-url`, or `attachment` field. If multiple attachments are listed, the first one is opened. |
+
+<Note>
+  **Hyper key** = <kbd>⌘⌥⌃⇧</kbd> all four modifier keys pressed simultaneously. This is an artificial "fifth" modifier that does not exist on a standard Mac keyboard by default. You can create it using [Karabiner Elements](https://karabiner-elements.pqrs.org/), [BetterTouchTool](https://www.macupdate.com/app/mac/32953/bettertouchtool), or the [Hyperkey](https://hyperkey.app/) app, all of which allow you to remap a key (typically Caps Lock) to send all four modifiers at once.
+</Note>
+
+## Auxiliary Actions (via `scp` keyword)
+
+These options are accessed by typing `scp` in Alfred rather than through modifier keys on a search result.
+
+| Option | Action |
+|--------|--------|
+| **Change citation format** | Switch between Pandoc, LaTeX, org mode, Multi-Markdown, eta, iA Writer, wikilink, tag, bare citekey, bracketed citekey, or formatted single entry |
+| **Cheat Sheet** | Open a quick-reference cheat sheet of all available citation picker actions |
+| **Citation Style Search** | Search for a CSL file online and download it to the folder configured in workflow settings (default: `~/.pandoc/csl/`) |
+| **Force Buffer Reload** | Force a full reload of the citation cache, bypassing the automatic staleness check |

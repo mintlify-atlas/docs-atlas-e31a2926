@@ -1,0 +1,55 @@
+---
+title: "Install Supercharged Citation Picker for Alfred"
+sidebarTitle: "Installation"
+description: "Download and configure the Supercharged Citation Picker Alfred workflow: set your BibTeX library path, choose a citation format, and assign a hotkey."
+---
+
+Getting Supercharged Citation Picker up and running takes only a few minutes. The workflow ships as a single `.alfredworkflow` file and requires no package manager or build step — download, double-click, and configure your `.bib` path to be ready to cite.
+
+<Warning>
+  This workflow requires Alfred's **Powerpack** license. The Powerpack is a one-time paid upgrade that unlocks workflow support in Alfred. You can purchase it at [alfredapp.com/powerpack](https://www.alfredapp.com/powerpack/). The workflow will not install without it.
+</Warning>
+
+## Setup steps
+
+<Steps>
+  <Step title="Download the latest release">
+    Go to the [latest release page on GitHub](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/releases/latest) and download the `.alfredworkflow` file attached to the release.
+  </Step>
+  <Step title="Install into Alfred">
+    Double-click the downloaded `.alfredworkflow` file. Alfred will open an import dialog. Click **Import** to add the workflow to your Alfred library.
+  </Step>
+  <Step title="Set your BibTeX library path">
+    Open **Alfred Preferences** → **Workflows** → select **Supercharged Citation Picker** → click **Configure Workflow** (the `[x]` button in the top-right toolbar). Set the `bibtex_library_path` variable to the full path of your primary `.bib` file (e.g. `~/Documents/references.bib`).
+  </Step>
+  <Step title="(Optional) Add a secondary library">
+    If you maintain two separate `.bib` files, set the `secondary_library_path` variable in the same configuration panel. Both libraries are searched simultaneously, and entries from the secondary library are marked with a 2️⃣ icon.
+  </Step>
+  <Step title="Select your citation format">
+    Type `scp` in Alfred and select **Change citation format** from the list. Choose the format that matches your writing environment. The default is **Pandoc** (`[@citekey]`). Available formats include LaTeX, org mode, Multi-Markdown, iA Writer, eta templates, `[[wikilinks]]`, `#tags`, bare citekeys, and bracketed citekeys.
+  </Step>
+  <Step title="Assign a hotkey">
+    In the Alfred workflow editor, locate the **Hotkey** trigger block at the top of the workflow canvas. Double-click it and press your preferred key combination (e.g. `⌥Space` or `⌃⌥C`). This lets you open the citation picker from any text field without typing a keyword.
+  </Step>
+</Steps>
+
+## Configuration reference
+
+The table below lists every available workflow variable. All variables are set via **Alfred Preferences → Workflows → Supercharged Citation Picker → Configure Workflow**.
+
+| Setting | Required | Description |
+|---|---|---|
+| `bibtex_library_path` | ✅ Yes | Full path to your primary `.bib` file. The workflow cannot function without this. |
+| `secondary_library_path` | No | Full path to an optional second `.bib` file. Both libraries are searched together. |
+| `literature_note_folder` | No | Folder where Markdown literature notes are stored or created. Files must be named exactly after their citekey. |
+| `pdf_folder` | No | Folder where PDFs are stored for auto-filing and quick-open. PDFs must be named `{citekey}.pdf` or `{citekey}_{any text}.pdf`. |
+| `csl_for_pandoc` | No | Path to a `.csl` citation style file used for the *Formatted single entry* and *Paste full bibliography* actions. Defaults to APA 7th if not set. |
+
+## Pandoc (optional)
+
+[Pandoc](https://pandoc.org/installing.html) is only needed for two features:
+
+- **Formatted single entry** — pastes a fully rendered bibliography entry for the selected item (e.g. a complete APA reference string).
+- **Paste full bibliography** — pastes a formatted bibliography string via `⌘⌥↵`.
+
+All other citation formats and workflow features work without Pandoc installed.

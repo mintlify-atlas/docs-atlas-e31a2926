@@ -1,72 +1,79 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Supercharged Citation Picker",
+  "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#848c8c",
+    "light": "#5c3e88",
+    "dark": "#352a37"
   },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
+  "favicon": "https://media.brand.dev/698fe9f8-6de7-4edf-85bd-365e49e965ee.png",
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://media.brand.dev/0936dff0-cdae-49da-a4a3-6ba3d257a99c.png",
+    "dark": "https://media.brand.dev/0936dff0-cdae-49da-a4a3-6ba3d257a99c.png"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/chrisgrieser/alfred-bibtex-citation-picker"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/chrisgrieser/alfred-bibtex-citation-picker"
     }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Usage",
+            "pages": [
+              "usage/search",
+              "usage/citation-actions",
+              "usage/citation-formats",
+              "usage/keyboard-shortcuts"
+            ]
+          },
+          {
+            "group": "Advanced Features",
+            "pages": [
+              "advanced/bibliography-actions",
+              "advanced/add-new-entries",
+              "advanced/literature-notes",
+              "advanced/pdf-management",
+              "advanced/csl-styles",
+              "advanced/dual-library"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/workflow-settings",
+              "configuration/entry-types",
+              "configuration/integrations"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/icon-meanings",
+              "reference/troubleshooting",
+              "reference/changelog"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

@@ -1,0 +1,102 @@
+---
+title: "Searching Your BibTeX Library in Alfred"
+sidebarTitle: "Search"
+description: "Search BibTeX entries by title, author, year, citekey, journal, or keyword tags using smart queries, short queries, and filter operators."
+---
+
+The Supercharged Citation Picker searches across multiple fields simultaneously the moment you start typing. You never need to know exactly which field a piece of information lives in — just type what you remember and the picker will find it.
+
+## Searchable Fields
+
+Every query searches across all of the following fields at once:
+
+| Field | Notes |
+|-------|-------|
+| **Title** | Full title text |
+| **Author / Editor last name** | Searches last names only |
+| **Year** | Publication year (see match settings below) |
+| **Journal / Booktitle** | Journal name or collection title |
+| **Citekey** | Prefix with `@` to search citekeys directly |
+| **Keywords / Tags** | Prefix with `#` to search keyword fields |
+
+These fields come directly from the `BibtexEntry` class, which parses `author`, `editor`, `year`, `date`, `title`, `journal`, `booktitle`, `citekey`, and `keywords` fields out of your `.bib` file.
+
+## Smart Queries
+
+Smart queries let you combine multiple search terms — each targeting a different field — in a single query string separated by spaces.
+
+| Query | What it matches |
+|-------|----------------|
+| `grieser` | Entries where an author or editor last name contains "grieser" |
+| `2020` | Entries published in 2020 |
+| `@Grieser2020` | The entry whose citekey is exactly `Grieser2020` |
+| `#sociology` | Entries tagged with the keyword "sociology" |
+| `2020 #cognition grieser` | Entries from 2020, tagged "cognition", by Grieser — all three at once |
+
+You can freely combine an author name, a year, one or more `#keyword` tags, and a `@citekey` prefix in any order in the same query.
+
+## Short Queries
+
+You do not need to fully spell out every term. As long as your prefix is unambiguous within your library, the picker will find the right entries:
+
+```
+grie #cogn 2020
+```
+
+gives the same result as:
+
+```
+grieser #cognition 2020
+```
+
+This applies to author names, keyword tags, and journal/booktitle fragments alike.
+
+## Autocomplete
+
+Press <kbd>Tab</kbd> while a result is highlighted to auto-complete the search field with the **first author's last name** for that entry. This is useful for quickly narrowing down a result set or building up a multi-author query.
+
+## Recency Sorting
+
+The citation picker automatically floats recently used entries to the top of the results list. This is handled at the Alfred level via the `uid` field (set to the citekey), so frequently cited works surface faster over time without any manual configuration.
+
+## Filter Operators
+
+Two special filter tokens can be added anywhere in your query to restrict results to entries that have particular associated files:
+
+| Filter token | Effect |
+|---|---|
+| `*` | Show only entries that have a **literature note** in your configured notes folder |
+| `pdf` | Show only entries that have an associated **PDF** in your configured PDF folder |
+
+These can be combined with any other query terms:
+
+```
+* grieser          # entries by Grieser that have a literature note
+pdf 2020           # entries from 2020 that have a PDF
+* #cognition 2020  # entries tagged "cognition", published in 2020, with a note
+```
+
+## Match Settings
+
+The following options are configurable in the workflow settings:
+
+### `match_authors_in_etal`
+
+Controls whether authors beyond the first are searchable when an entry has multiple authors displayed as *et al.*
+
+- When **enabled** (`1`): all author and editor last names are included in the Alfred matcher, even for entries with three or more contributors.
+- When **disabled** (`0`): only the first author and first editor last name are matched.
+
+### `match_year_type`
+
+Controls whether years are matched as 2-digit short forms, full 4-digit forms, or both.
+
+| Setting | Behavior |
+|---------|----------|
+| `short` | Match the last 2 digits of the year (e.g., `20` matches 2020) |
+| `full` | Match the full 4-digit year (e.g., `2020`) |
+| `short full` | Match both forms simultaneously |
+
+<Note>
+  The buffer that drives the citation picker is cached and automatically rebuilt whenever your `.bib` file, literature note folder, PDF folder, or workflow preferences change. You can also force a manual reload via **`scp` → Force Buffer Reload** in Alfred.
+</Note>

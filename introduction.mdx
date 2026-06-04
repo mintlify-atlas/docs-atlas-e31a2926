@@ -1,0 +1,54 @@
+---
+title: "Supercharged Citation Picker: Smart BibTeX Citations for macOS"
+sidebarTitle: "Introduction"
+description: "Supercharged Citation Picker is an Alfred workflow that inserts BibTeX citations system-wide in Pandoc, LaTeX, org-mode, and 10+ formats with blazing speed."
+---
+
+Supercharged Citation Picker is an [Alfred](https://www.alfredapp.com/) workflow for macOS that turns any text field into a BibTeX citation entry point. Academics, researchers, and writers who work with `.bib` files can trigger the picker from any application — a text editor, a browser, a notes app — search their library in milliseconds, and paste a perfectly formatted citation without ever leaving the keyboard. With a measured reload time of roughly 200 milliseconds for a library of 4,000 entries, it is considerably faster than any comparable citation picker.
+
+## Feature overview
+
+<CardGroup cols={2}>
+  <Card title="Smart Search" icon="magnifying-glass">
+    Search by title, author last name, year, journal, collection, or citekey. Prepend `@` to target a specific citekey or `#` to filter by keyword/tag. Smart multi-field queries and short prefix queries are supported, and recently used entries bubble to the top automatically.
+  </Card>
+  <Card title="10+ Citation Formats" icon="code">
+    Insert citations in Pandoc (`[@citekey]`), LaTeX (`\autocite{citekey}`), org mode (`[cite:@citekey]`), Multi-Markdown, iA Writer, eta templates, `[[wikilinks]]`, `#tags`, bare citekeys, bracketed citekeys, and formatted single-entry bibliographies.
+  </Card>
+  <Card title="Reference Management" icon="book">
+    Add new entries directly from a selected DOI, ISBN, or DOI-containing URL via Alfred's Universal Action or a dedicated hotkey. Delete entries from your library without leaving Alfred. Reveal entries in Zotero, Neovim, VS Code, BibDesk, or Sublime Text.
+  </Card>
+  <Card title="PDF Management" icon="file-pdf">
+    Automatically rename and file PDFs by citekey. The picker detects PDFs in your configured folder and marks them with a 📕 icon. A single keystroke opens the associated PDF in your default reader.
+  </Card>
+  <Card title="Literature Notes" icon="note-sticky">
+    Open or create Markdown literature notes linked to any entry. Notes are matched by citekey filename. Filter your library to only entries that already have a note. Add `*` to any query to show only entries with an attached literature note.
+  </Card>
+  <Card title="Dual Library Support" icon="layer-group">
+    Load two `.bib` files simultaneously and search across both at once. Entries from the secondary library are marked with a 2️⃣ icon so you always know their source.
+  </Card>
+</CardGroup>
+
+## How it works
+
+When you trigger the citation picker, the workflow reads your `.bib` file (or files) directly from disk and builds an in-memory buffer of all parsed entries. Alfred's native filtering then searches that buffer in real time as you type. Because the workflow communicates with Alfred's UI layer instead of spawning a separate GUI application, search results appear instantly and the entire round-trip — from keypress to pasted citation — happens without switching windows or context. The buffer is refreshed automatically; you can also force a reload at any time via `scp` → **Force Buffer Reload**.
+
+## Requirements
+
+| Requirement | Notes |
+|---|---|
+| **macOS** | The workflow uses macOS-native JavaScript for Automation (JXA) and AppleScript |
+| **Alfred 5** | Earlier versions are not supported |
+| **Alfred Powerpack license** | Required to install and run any Alfred workflow |
+| **A `.bib` file** | Your BibTeX library — local path set during configuration |
+
+## Optional dependencies
+
+- **[Pandoc](https://pandoc.org/installing.html)** — required for the *Formatted single entry* citation format and the *Paste full bibliography* action. Without Pandoc these two features are unavailable; all other formats work without it.
+- **[Obsidian](https://obsidian.md/)** — when your literature note folder is inside an Obsidian vault, notes are automatically opened in Obsidian instead of the default Markdown editor.
+
+<Note>
+  Supercharged Citation Picker is a **macOS-only** tool. It runs exclusively inside [Alfred](https://www.alfredapp.com/), which requires a paid [Powerpack](https://www.alfredapp.com/powerpack/) license. The base Alfred application is free, but workflow support is a Powerpack feature.
+</Note>
+
+Ready to get started? Head over to the [Installation](/installation) page to download the workflow and point it at your library.

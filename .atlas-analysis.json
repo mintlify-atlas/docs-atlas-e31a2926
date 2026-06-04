@@ -1,0 +1,99 @@
+{
+  "projectType": "general",
+  "projectName": "Supercharged Citation Picker",
+  "projectDescription": "A smart Alfred workflow for inserting BibTeX citations in multiple formats (Pandoc, LaTeX, Multi-Markdown, org-mode, and more) and managing references directly from macOS.",
+  "theme": "willow",
+  "primaryColor": "#848c8c",
+  "lightColor": "#5c3e88",
+  "darkColor": "#352a37",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Usage",
+            "pages": [
+              "usage/search",
+              "usage/citation-actions",
+              "usage/citation-formats",
+              "usage/keyboard-shortcuts"
+            ]
+          },
+          {
+            "group": "Advanced Features",
+            "pages": [
+              "advanced/bibliography-actions",
+              "advanced/add-new-entries",
+              "advanced/literature-notes",
+              "advanced/pdf-management",
+              "advanced/csl-styles",
+              "advanced/dual-library"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/workflow-settings",
+              "configuration/entry-types",
+              "configuration/integrations"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/icon-meanings",
+              "reference/troubleshooting",
+              "reference/changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "System-wide citation insertion via Alfred hotkey or keyword trigger",
+    "Smart fuzzy search across title, author, year, journal, citekey, and keywords",
+    "10+ citation formats: Pandoc, LaTeX, Multi-Markdown, org-mode, eta, wikilink, tag, iA Writer, and more",
+    "Add new BibTeX entries from DOI, ISBN, or URLs via Universal Action",
+    "Automatic PDF renaming and filing by citekey",
+    "Literature note creation and Obsidian vault integration",
+    "Support for two simultaneous BibTeX libraries",
+    "Paste full formatted bibliographies using Pandoc and CSL styles",
+    "Online CSL style search and download from the official repository",
+    "Blazingly fast buffer with smart invalidation (sub-200ms reload for 4000+ entries)"
+  ],
+  "publicApiSurface": [
+    "Alfred keyword `cc` / `ct` — open citation picker",
+    "Alfred keyword `scp` — auxiliary features menu",
+    "Universal Action — add entry from selected DOI/ISBN/URL",
+    "Hotkey trigger — open citation picker from any text field",
+    "workflow variable: bibtex_library_path",
+    "workflow variable: secondary_library_path",
+    "workflow variable: literature_note_folder",
+    "workflow variable: pdf_folder",
+    "workflow variable: open_entries_in (BibDesk, Zotero, VS Code, Sublime, Neovim, default app)",
+    "workflow variable: csl_for_pandoc",
+    "workflow variable: match_authors_in_etal",
+    "workflow variable: match_year_type (short/full)",
+    "Citation format: pandoc — [@citekey, p. N; @citekey2]",
+    "Citation format: latex — \\autocite{citekey}",
+    "Citation format: org — [cite:@citekey]",
+    "Citation format: multi-markdown — [#citekey]",
+    "Citation format: eta — {% cite citekey --prefix %}",
+    "Citation format: wikilink — [[citekey]]",
+    "Citation format: tag — #citekey",
+    "Citation format: iA Writer — [^citekey]",
+    "Citation format: bare citekey",
+    "Citation format: bracketed citekey — (citekey)",
+    "Citation format: formatted single entry (via Pandoc)"
+  ]
+}

@@ -1,47 +1,102 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Supercharged Citation Picker"
+sidebarTitle: "Quickstart"
+description: "Learn how to trigger the citation picker, search your BibTeX library, and insert your first Pandoc or LaTeX citation in under a minute."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+Once your `.bib` path is configured, you are one keypress away from inserting a citation anywhere on your Mac. This guide walks through the shortest path from a fresh install to your first pasted citation.
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+## Step 1: Trigger the picker
 
-## Prerequisites
+Press the **hotkey** you assigned during setup, or type the keyword **`ct`** in Alfred. The citation picker works system-wide — you can invoke it from any text field in any application without switching windows.
 
-Before you begin, you must have:
+## Step 2: Search your library
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+Start typing as soon as the picker opens. You can match entries by:
 
-## Get started
+- **Title** — any word or phrase from the title
+- **Author or editor last name** — partial names are fine (`grie` matches `Grieser`)
+- **Year** — four-digit year
+- **Journal or collection name**
+- **Citekey** — prepend `@`, e.g. `@Grieser2020`
+- **Keyword / tag** — prepend `#`, e.g. `#sociology`
 
-<Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+### Smart query examples
 
-    ```bash
-    npm install your-package
+| Query | What it matches |
+|---|---|
+| `grieser 2020` | Author "Grieser" **and** year 2020 |
+| `@Grieser2020` | The specific citekey `Grieser2020` |
+| `#sociology` | Entries tagged with "sociology" |
+| `2020 #cognition grieser` | Year 2020, tag "cognition", author "Grieser" — all combined |
+| `grie #cogn 2020` | Same result using short prefix queries |
+| `* grieser` | Entries by "Grieser" that have an attached literature note |
+| `pdf grieser` | Entries by "Grieser" that have an auto-filed PDF |
+
+You do not need to spell out full words. The workflow matches prefixes, so short queries like `grie #cogn` return the same result as `grieser #cognition` as long as the prefix is unambiguous.
+
+## Step 3: Insert the citation
+
+Highlight the entry you want and press **`↵`**. The workflow pastes the formatted citation directly into the text field that was focused when you triggered the picker.
+
+For the default **Pandoc** format, a single citation looks like `[@Grieser2020]`.
+
+### Output by format
+
+<Tabs>
+  <Tab title="Pandoc">
     ```
-  </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
-    ```bash
-    your-cli init
+    [@Grieser2020]
     ```
-  </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
-
-    ```bash
-    your-cli start
+    Supports page numbers (`[@Grieser2020, p. 23]`) and multiple citations in one bracket (`[@Smith2019; @Grieser2020]`).
+  </Tab>
+  <Tab title="LaTeX">
     ```
-  </Step>
-</Steps>
+    \autocite{Grieser2020}
+    ```
+    Uses `\autocite` from BibLaTeX. Multi-citation and page-number support follows LaTeX conventions.
+  </Tab>
+  <Tab title="Org mode">
+    ```
+    [cite:@Grieser2020]
+    ```
+    Compatible with Org mode's native citation syntax (`org-cite`).
+  </Tab>
+  <Tab title="Multi-Markdown">
+    ```
+    [#Grieser2020]
+    ```
+    Compatible with [MultiMarkdown 6 citation syntax](https://fletcher.github.io/MultiMarkdown-6/syntax/citation.html).
+  </Tab>
+  <Tab title="Wikilink">
+    ```
+    [[Grieser2020]]
+    ```
+    Inserts the citekey as a wikilink, useful for Obsidian and similar tools.
+  </Tab>
+</Tabs>
+
+## Adding a second citation to the same bracket
+
+Press **`⌥↵`** instead of `↵` to add another citation without closing the bracket. The picker reopens immediately so you can search for the next entry. This is how you build multi-citation strings like `[@Smith2019; @Grieser2020]` in Pandoc format.
 
 <Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+  `⌥↵` chains citations together inside a single pair of delimiters. Press plain `↵` only when you are done adding citations for that inline reference.
 </Tip>
+
+## What to explore next
+
+<CardGroup cols={2}>
+  <Card title="Citation Formats" icon="code" href="/usage/citation-formats">
+    See the full list of supported formats — Pandoc, LaTeX, org mode, iA Writer, eta templates, wikilinks, tags, bare citekeys, and more.
+  </Card>
+  <Card title="Citation Actions" icon="bolt" href="/usage/citation-actions">
+    Learn every keyboard shortcut: page numbers, inline citations, full bibliography paste, URL opening, entry preview, and more.
+  </Card>
+  <Card title="Add New Entries" icon="plus" href="/advanced/add-new-entries">
+    Select a DOI, ISBN, or DOI URL anywhere on your Mac and add it to your BibTeX library in seconds via Alfred's Universal Action.
+  </Card>
+  <Card title="Workflow Settings" icon="gear" href="/configuration/workflow-settings">
+    Configure your library paths, literature note folder, PDF folder, CSL style file, and other workflow variables.
+  </Card>
+</CardGroup>

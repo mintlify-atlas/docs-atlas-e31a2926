@@ -1,0 +1,82 @@
+---
+title: "Supercharged Citation Picker Release History"
+sidebarTitle: "Changelog"
+description: "Release history and update notes for the Supercharged Citation Picker Alfred workflow. Find the latest version and GitHub release notes."
+---
+
+The Supercharged Citation Picker follows **semantic versioning**. Find the full release history, version diffs, and `.alfredworkflow` download links on GitHub.
+
+<Note>
+The complete, authoritative changelog is maintained on GitHub Releases:
+[**https://github.com/chrisgrieser/alfred-bibtex-citation-picker/releases**](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/releases)
+</Note>
+
+## Latest Version
+
+| Field | Value |
+|-------|-------|
+| **Version** | `11.9.0` |
+| **Released** | 2023-09-26 |
+| **Download** | [GitHub Releases (latest)](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/releases/latest) |
+
+## Major Feature Areas
+
+The following feature categories have been developed and refined across the project's release history. Each represents a distinct area of functionality that has grown over successive versions.
+
+<Steps>
+
+<Step title="Core Citation Picking and Format Switching">
+The foundational capability of the workflow: triggering the picker via hotkey or keyword, searching a `.bib` library at high speed, and inserting formatted citations into any text field system-wide.
+
+Support for multiple citation formats has expanded over time — from Pandoc citations as the initial default to a full menu of options including LaTeX, Multi-Markdown, org mode, eta templates, iA Writer, wikilinks, tags, bare citekeys, and bracketed citekeys. The active format is toggled without editing the workflow directly, via `scp` → **Change citation format**.
+
+Smart search (citekey prefix `@`, keyword prefix `#`, short queries, et al. matching, tab-completion) and in-picker actions (inline citations, page numbers, multi-citation building) are part of this core layer.
+</Step>
+
+<Step title="Dual Library Support">
+The workflow supports loading entries from **two BibTeX files simultaneously**, with the secondary library configured via `secondary_library_path`. Entries from the second library are visually distinguished by the `2️⃣` prefix in both the title and subtitle.
+
+This enables workflows that maintain a personal library alongside a shared or project-specific one, without needing to merge files.
+</Step>
+
+<Step title="PDF Auto-Filing and Management">
+A dedicated PDF management layer allows the workflow to locate, open, and file PDFs by citekey. PDFs stored in `pdf_folder` with the naming convention `{citekey}.pdf` or `{citekey}_{suffix}.pdf` are automatically associated with their entries and indicated by `📕`.
+
+The auto-file feature renames and moves PDFs into the managed folder, and the `pdf` search prefix filters the picker to show only entries that have an associated PDF.
+</Step>
+
+<Step title="Literature Note Creation with Obsidian Integration">
+Literature notes — Markdown files named exactly after a citekey — can be opened or created directly from the picker via <kbd>⌃⌥↵</kbd>. The `📓` indicator marks entries that already have a note.
+
+When the configured `literature_note_folder` is located inside a registered [Obsidian](https://obsidian.md/) vault, notes are opened directly in Obsidian rather than the system default editor. The vault registry at `~/Library/Application Support/obsidian/obsidian.json` is used for detection. The `*` search prefix filters the picker to show only entries with existing literature notes.
+</Step>
+
+<Step title="DOI and ISBN Entry Addition">
+New references can be added to the BibTeX library without leaving the keyboard. Select a DOI, ISBN-13, or a URL containing a DOI anywhere on screen, then trigger the workflow via its Universal Action or dedicated hotkey. The workflow fetches metadata from CrossCite (for DOIs), Open Library (for ISBNs), and Google Books, then writes a formatted BibTeX entry directly into `bibtex_library_path`.
+
+Note: this feature is not compatible with BetterBibTeX-managed files, which use a one-way Zotero-to-BibTeX sync.
+</Step>
+
+<Step title="CSL Style Search and Download">
+Via `scp` → **Citation Style Search**, the workflow searches the [CSL style repository](https://github.com/citation-style-language/styles) online and downloads `.csl` files to the configured location (default: `~/.pandoc/csl/`). This enables quick setup of custom citation styles for Pandoc-rendered bibliographies without leaving Alfred.
+</Step>
+
+<Step title="AlfredExtraPane Link Preview Support">
+When the [AlfredExtraPane](https://github.com/mr-pennyworth/alfred-extra-pane) companion app is installed, hovering over an entry in the picker triggers a live preview of the entry's URL in a sidebar panel. This provides instant visual confirmation of the linked resource (article landing page, DOI resolver page, etc.) without opening a browser tab.
+</Step>
+
+</Steps>
+
+## Upgrade Note
+
+<Warning>
+After updating the workflow to a new version, your selected citation format may reset to the default (Pandoc Citations). This is a known limitation of Alfred's environment variable handling during workflow updates.
+
+**After each update**, go to `scp` → **Change citation format** and re-select your preferred format if needed.
+</Warning>
+
+## Full Release History
+
+For detailed per-version notes — including bug fixes, breaking changes, and new options — see the full release list on GitHub:
+
+[**https://github.com/chrisgrieser/alfred-bibtex-citation-picker/releases/latest**](https://github.com/chrisgrieser/alfred-bibtex-citation-picker/releases/latest)

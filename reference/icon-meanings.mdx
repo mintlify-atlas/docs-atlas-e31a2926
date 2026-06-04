@@ -1,0 +1,72 @@
+---
+title: "Icon Reference: What Each Symbol Means in the Citation Picker"
+sidebarTitle: "Icon Meanings"
+description: "Complete reference of emoji indicators shown next to entries in the citation picker, including URL, abstract, keywords, literature note, PDF, attachment, and library icons."
+---
+
+Each entry in the picker displays a row of emoji indicators in its subtitle line. These indicators help you quickly see what resources and metadata are available for each reference — at a glance, without opening the entry.
+
+## Entry Type Icons
+
+The icon shown to the **left** of each Alfred result (the large icon in the result row) is a PNG loaded from the workflow's `icons/` folder. The filename matches the BibTeX entry type in lowercase — for example, `article.png`, `book.png`, `incollection.png`, and so on. This means the icon selection requires no special code: adding a new `icons/{type}.png` file is sufficient to support a new entry type.
+
+## Subtitle Emoji Indicators
+
+The subtitle line of each result follows this format:
+
+```
+Author(s) Year   [collection info]   [emojis joined by spaces]
+```
+
+For example:
+```
+Grieser et al. 2023    In: Annual Review of Sociology 49(1)   🌐 📄 3 🏷 📓 📕
+```
+
+The emoji section at the end is built from the following indicators:
+
+| Emoji | Meaning | When shown |
+|-------|---------|------------|
+| 🌐 | URL or DOI available | Entry has a `url` field, or a `doi` field (used to construct `https://doi.org/…`) |
+| 📄 | Abstract available | Entry has a non-empty `abstract` field |
+| n 🏷 | n Keywords | Entry has a `keywords` field; n is the count of comma-separated tags (e.g., `3 🏷`) |
+| 📓 | Literature note exists | A `.md` file named exactly like the citekey exists in the configured `literature_note_folder` |
+| 📕 | PDF available | A file named `{citekey}.pdf` or `{citekey}_{anything}.pdf` exists in the configured `pdf_folder` |
+| 2️⃣ | From second library | Entry comes from the secondary `.bib` file configured in `secondary_library_path` |
+| 📎 | Attachment field present | The BibTeX entry contains a `file`, `local-url`, or `attachment` field |
+
+<Note>
+The `📕` indicator is only shown for PDFs discovered in the dedicated `pdf_folder` — files filed by citekey. The `📎` indicator covers attachments referenced directly inside the BibTeX entry's own fields. An entry can show both if it has both.
+</Note>
+
+## Collection Info
+
+In addition to the emoji row, the subtitle also displays contextual collection information between the year and the emojis:
+
+- **Articles** (`article` type): shows `In: {journal}`, optionally followed by `{volume}({issue})` when those fields are present.
+- **Book chapters** (`incollection` or `inbook` type): shows `In: {booktitle}`.
+- All other entry types: no collection info is shown.
+
+## Editor Display
+
+When an entry has no `author` field but does have an `editor` field, the editors are displayed in place of authors with an appropriate label:
+- Single editor: `Smith (Ed.)`
+- Multiple editors: `Smith et al. (Eds.)`
+
+## Second Library Indicator
+
+Entries sourced from the secondary library are prefixed with `2️⃣ ` at the **beginning of the title** (not just in the emoji row), making them immediately identifiable even before reading the subtitle.
+
+## Large Type Overlay
+
+Press <kbd>⌘L</kbd> on any result to open Alfred's **Large Type** overlay. For citation entries, this displays:
+
+1. The **full, untruncated title** and citekey (e.g., `My Very Long Title (citekey: Grieser2023)`)
+2. The full **abstract** (if present)
+3. All **keywords** as a comma-separated list (e.g., `keywords: sociology, digital economy, platforms`)
+
+This is especially useful for entries whose titles are cut off in the main picker view.
+
+<Tip>
+The `alfred_bar_width` workflow variable controls how many characters of the title are shown in the main picker before being truncated with `…`. Increase this value if you have a wide Alfred window and want to see more of long titles without needing Large Type.
+</Tip>

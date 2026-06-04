@@ -1,0 +1,74 @@
+---
+title: "Citation Actions: Insert, Multi-Cite, and Page Numbers"
+sidebarTitle: "Citation Actions"
+description: "Press Enter to paste a citation, add multiple citekeys in one bracket, include page numbers, or copy an inline citation using Alfred modifier keys."
+---
+
+Once you have found an entry in the citation picker, Alfred modifier keys let you control exactly what gets pasted into your document — from a plain citekey to a multi-citation bracket with page numbers.
+
+## Basic Insertion
+
+Press <kbd>↵</kbd> on any highlighted entry to paste the citekey in your currently configured citation format. For example, with Pandoc format selected:
+
+```
+[@Grieser2020]
+```
+
+The format of the output depends on which citation style you have active. See [Citation Formats](/usage/citation-formats) for the full list.
+
+## Multi-Citation
+
+Press <kbd>⌥↵</kbd> instead of <kbd>↵</kbd> to add the selected entry to an open citation bracket rather than closing it immediately. You are then returned to the search field to select another entry. When you finish with <kbd>↵</kbd>, all selected citekeys are combined in a single bracket:
+
+```
+[@Grieser2020; @Smith2019]
+```
+
+You can chain as many citations as needed before confirming the final one.
+
+## Inline Citation
+
+Press <kbd>⇧⌘↵</kbd> to paste the citation **without** surrounding bracket formatting. This is the "inline" form that some Pandoc documents require for citations that serve as grammatical subjects in a sentence:
+
+```
+@Grieser2022
+```
+
+instead of:
+
+```
+[@Grieser2022]
+```
+
+## Page Numbers
+
+Press <kbd>⌘↵</kbd> to open a page-number prompt before pasting. Type the page number or range and then use one of these confirmations:
+
+| Confirmation | Result |
+|---|---|
+| <kbd>⌥↵</kbd> | Paste with page number, then return to picker to add another citation |
+| <kbd>⌘↵</kbd> | Paste with page number and close |
+| <kbd>⇧⌘↵</kbd> | Paste as an inline citation with page number, e.g. `@Grieser2022 [p. 42]` |
+
+<Note>
+  Page numbers and inline citations are **not supported** for all citation formats. LaTeX, wikilinks, and tags do not support these features. See [Citation Formats](/usage/citation-formats) for per-format details.
+</Note>
+
+## URL Actions
+
+Every entry can carry a URL or DOI. The following actions open or copy that link:
+
+| Shortcut | Action |
+|---|---|
+| <kbd>⌃↵</kbd> | Open the entry's URL in your default browser |
+| <kbd>⌘C</kbd> | Copy the entry's URL to the clipboard |
+
+If the BibTeX entry has a `doi` field but no `url` field, the picker automatically constructs a `https://doi.org/…` link and uses that instead.
+
+## Large Type Preview
+
+Press <kbd>⌘L</kbd> to display the full, unabridged title, abstract, and complete keyword list for the highlighted entry in Alfred's Large Type overlay. This is useful for double-checking an entry before inserting it, especially when titles are truncated in the results list.
+
+## QuickLook Preview
+
+Press <kbd>⌘Y</kbd> to open a QuickLook window showing a preview of the entry's URL (or DOI URL). Requires that the entry has a URL or DOI field.

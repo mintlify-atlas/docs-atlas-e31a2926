@@ -1,0 +1,49 @@
+---
+title: "Use Two BibTeX Libraries Simultaneously"
+sidebarTitle: "Dual Library"
+description: "Configure a secondary BibTeX library to search and cite from two .bib files at once, with visual indicators to distinguish which library each entry comes from."
+---
+
+The Supercharged Citation Picker supports picking citations from two BibTeX libraries at the same time. This is useful for maintaining a shared group library alongside a personal one, or for keeping a project-specific `.bib` file separate from your main collection.
+
+## Setup
+
+Set the `secondary_library_path` workflow variable to the full path of your second `.bib` file (e.g., `~/Documents/project-references.bib`).
+
+The secondary library path is checked for existence at load time. If the file does not exist at the specified path, it is **silently skipped** — no error is shown and the picker continues to work normally with the primary library.
+
+## Visual Indicator
+
+Entries from the second library are prefixed with a **`2️⃣`** icon in the citation picker list, making it easy to distinguish their origin at a glance.
+
+Entries from the primary library have no such prefix.
+
+## How the Buffer Works
+
+When both libraries are configured, the workflow parses and merges them into a single picker list:
+
+- **Primary library entries** appear first, sorted by recency (most recently used entries rise to the top).
+- **Secondary library entries** follow, also in reverse order.
+
+All search, filtering, and citation-insertion features work identically across both libraries.
+
+## Limitations
+
+Some management actions are restricted to the primary library:
+
+| Feature | Primary library | Secondary library |
+|---|---|---|
+| `⇧↵` — Reveal entry in app | ✅ | ❌ Not supported |
+| `⌘fn↵` — Delete entry | ✅ | ❌ Not supported |
+| Add new entry (DOI/ISBN) | ✅ Always writes here | ❌ Never written to |
+| All citation-insertion actions | ✅ | ✅ |
+| PDF management | ✅ | ✅ |
+| Literature notes | ✅ | ✅ |
+
+<Note>
+  New entries added via the DOI/ISBN feature are always appended to the **primary library** (`bibtex_library_path`), regardless of which entry was selected when the action was triggered. See [Add New Entries](/advanced/add-new-entries) for details.
+</Note>
+
+<Tip>
+  The dual-library feature is ideal for scenarios like: a Zotero-exported group library as secondary and a hand-curated personal `.bib` as primary, or a per-project bibliography alongside your full reference collection. Since the secondary library is read-only from the workflow's perspective, you can safely point it at any `.bib` file managed by another tool.
+</Tip>

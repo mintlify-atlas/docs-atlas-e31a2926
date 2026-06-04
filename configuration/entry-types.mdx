@@ -1,0 +1,95 @@
+---
+title: "BibTeX Entry Types and Icons in the Citation Picker"
+sidebarTitle: "Entry Types"
+description: "How the citation picker displays different BibTeX entry types using icons, and which BibTeX fields are indexed for search and display."
+---
+
+The picker uses the BibTeX entry type (e.g., `@article`, `@book`) to select a display icon, making it easy to visually distinguish different reference types at a glance.
+
+## Entry Type Icons
+
+Each BibTeX entry type maps to a PNG icon file stored in the workflow's `icons/` folder. The picker resolves the icon by lowercasing the entry type and looking for `icons/{entrytype}.png`.
+
+| Entry type | Icon file | Description |
+|---|---|---|
+| `@article` | `article.png` | Journal articles |
+| `@book` | `book.png` | Books |
+| `@inbook` | `inbook.png` | Sections within a book |
+| `@incollection` | `incollection.png` | Book chapters |
+| `@inproceedings` | `inproceedings.png` | Conference papers |
+| `@mastersthesis` | `mastersthesis.png` | Master's theses |
+| `@thesis` | `thesis.png` | Theses (general) |
+| `@techreport` | `techreport.png` | Technical reports |
+| `@report` | `report.png` | Reports |
+| `@unpublished` | `unpublished.png` | Preprints, working papers |
+| `@software` | `software.png` | Software references |
+| `@patent` | `patent.png` | Patents |
+| `@online` | `online.png` | Online resources |
+| `@webpage` | `webpage.png` | Web pages |
+| `@misc` | `misc.png` | Miscellaneous entries |
+| `@comment` | `comment.png` | BibTeX comment entries |
+| Any other type | Alfred default | Fallback when no matching PNG is found |
+
+<Note>
+  You can add support for additional entry types simply by placing a PNG file named `{entrytype}.png` in the workflow's `icons/` folder — no code changes required. The entry type is lowercased before the icon lookup, so `@Article` resolves to `article.png`.
+</Note>
+
+---
+
+## Indexed BibTeX Fields
+
+The following fields are parsed from each `.bib` entry and used for search matching, display in Alfred's result list, or citation actions.
+
+| Field | Used for |
+|---|---|
+| `citekey` | Primary identifier; searchable with the `@` prefix (e.g., `@Grieser2022`) |
+| `title` | Displayed as the Alfred result title; searched by default |
+| `author` | Displayed in the subtitle; searched by last name |
+| `editor` | Displayed in the subtitle when no `author` is present; searched by last name |
+| `year` | Displayed in the subtitle; matched as a 4-digit or 2-digit year depending on `match_year_type` |
+| `date` | Parsed identically to `year`; 4-digit year extracted automatically |
+| `origyear` | Displayed alongside `year` as `year [origyear]` (e.g., `2010 [1965]`) |
+| `journal` | Displayed in the subtitle for `@article` entries; searched |
+| `booktitle` | Displayed in the subtitle for `@incollection` / `@inbook` entries; searched |
+| `volume` | Appended to the journal display (e.g., `Nature 42`) |
+| `issue` | Appended to the journal display in parentheses (e.g., `Nature 42(3)`) |
+| `url` | Opened with `⌃↵`; copied with `⌘C`; used for QuickLook preview |
+| `doi` | When no `url` is present, generates `https://doi.org/{doi}` as the URL |
+| `abstract` | Shown in Alfred's Large Type view (`⌘L`) together with title and keywords |
+| `keywords` | Searchable with the `#` prefix (e.g., `#sociology`); count shown as `n 🏷` |
+| `file` | Path to an attachment; opened with `⌃⌥⌘↵` |
+| `local-url` | Alternate attachment field (Bookends-style); used identically to `file` |
+| `attachment` | Alternate attachment field; used identically to `file` |
+
+<Note>
+  When an entry has multiple attachment fields (`file`, `local-url`, `attachment`), the **last** one parsed wins. If there are multiple paths inside a single field, the **first** attachment is opened.
+</Note>
+
+---
+
+## Display Format
+
+Each entry in the Alfred result list is rendered as:
+
+```
+[Title, truncated to alfred_bar_width]
+[Names] [Year]   In: [Journal/Booktitle]   [🌐] [📄] [n 🏷] [📓] [📕] [📎]
+```
+
+### Icon meanings
+
+| Icon | Meaning |
+|---|---|
+| 🌐 | Entry has a URL or DOI |
+| 📄 | Entry has an abstract |
+| n 🏷 | Entry has n keywords (tags) |
+| 📓 | Entry has a literature note in the configured folder |
+| 📕 | Entry has a PDF in the configured folder |
+| 📎 | Entry has a `file`, `local-url`, or `attachment` field |
+| 2️⃣ | Entry comes from the secondary library |
+
+### Author and editor display
+
+- With authors: last names shown, joined with `&` for two authors, or "et al." for three or more.
+- With editors but no authors: same formatting, with `(Ed.)` or `(Eds.)` appended after the name(s).
+- With neither: the name field is left blank.
