@@ -1,7 +1,7 @@
 ---
-title: "Add BibTeX Entries from DOI, ISBN, or URL"
+title: "Add New BibTeX Entries from a DOI, ISBN, or URL Link"
 sidebarTitle: "Add New Entries"
-description: "Select a DOI, ISBN, or URL containing a DOI, then use Alfred's Universal Action or a hotkey to fetch metadata and append a new entry to your BibTeX library."
+description: "Select a DOI, ISBN, or URL containing a DOI, then use Alfred's Universal Action or a hotkey to fetch metadata and append it to your BibTeX library."
 ---
 
 Select a DOI, ISBN, or URL that contains a DOI anywhere on your Mac, trigger the workflow, and a fully formatted BibTeX entry is fetched and appended to your library automatically — no copy-pasting into reference managers required.
@@ -12,10 +12,10 @@ Select a DOI, ISBN, or URL that contains a DOI anywhere on your Mac, trigger the
 2. **Trigger** the workflow via Alfred's [Universal Action](https://www.alfredapp.com/help/features/universal-actions/) or the dedicated hotkey you have configured in the workflow settings.
 3. The workflow **detects the input type** using regular expressions:
    - DOI pattern: `\b10.\d{4,9}/[-._;()/:A-Z0-9]+` (per CrossRef spec)
-   - ISBN pattern: a string of 9–40 digits optionally separated by hyphens
+   - ISBN pattern: a string of 9–40 digits optionally separated by hyphens (`^[\d-]{9,40}$`)
 4. **Metadata is fetched** from an online API:
-   - **DOI** → [CrossCite API](https://citation.crosscite.org/docs.html) at `doi.org`, returning CSL-JSON
-   - **ISBN** → [OpenLibrary API](https://openlibrary.org/developers/api) first; falls back to [Google Books API](https://developers.google.com/books/docs/v1/using) if OpenLibrary has no data
+   - **DOI** → [CrossCite API](https://citation.crosscite.org/docs.html) at `https://doi.org/` with `Accept: application/vnd.citationstyles.csl+json` header, returning CSL-JSON
+   - **ISBN** → [OpenLibrary API](https://openlibrary.org/developers/api) first (`openlibrary.org/api/books`); falls back to [Google Books API](https://developers.google.com/books/docs/v1/using) if OpenLibrary has no data
 5. A **citekey is generated** in `AuthorYear` format (see [Citekey Generation](#citekey-generation) below).
 6. **Uniqueness is enforced**: if the citekey already exists in the library, a lowercase letter is appended (`a`, `b`, `c`, …) until the citekey is unique.
 7. The **formatted BibTeX entry is appended** to your primary library file.

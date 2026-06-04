@@ -1,7 +1,7 @@
 ---
 title: "Create and Open Literature Notes from BibTeX Entries"
 sidebarTitle: "Literature Notes"
-description: "Automatically create Markdown literature notes named by citekey, open them in Obsidian or your default editor, and filter entries that have notes."
+description: "Automatically create Markdown literature notes named by citekey, open them in Obsidian or your default editor, and filter entries that already have notes."
 ---
 
 The Supercharged Citation Picker can create and open Markdown literature notes for any BibTeX entry. Notes are named exactly after their citekey, making them trivially linkable from citations in your writing.
@@ -38,6 +38,8 @@ The file is written to `{literature_note_folder}/{citekey}.md`.
 ## Obsidian Integration
 
 If `literature_note_folder` (or any of its parent directories) is inside an [Obsidian](https://obsidian.md/) vault, the workflow detects this automatically by reading Obsidian's vault registry at `~/Library/Application Support/obsidian/obsidian.json`.
+
+Vault detection uses a case-insensitive path prefix match, so it works correctly regardless of how macOS capitalizes directory names.
 
 When the note is inside a vault:
 - Obsidian is brought to the foreground.

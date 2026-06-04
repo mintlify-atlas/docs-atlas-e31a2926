@@ -29,7 +29,7 @@ The table below lists every supported format, an example of what it outputs for 
 | **Formatted single entry** | Full formatted reference | Requires [Pandoc](https://pandoc.org/installing.html) to be installed; citation style configurable in workflow settings (default: APA 7th) |
 
 <Note>
-  Not all formats support every citation action. Page numbers and inline citations are not available for LaTeX (which places page numbers differently), Multi-Markdown, wikilinks, tags, and bare citekeys.
+  Not all formats support every citation action. Inline citations and multi-cite are not available for LaTeX and Multi-Markdown, which use a `page_before_citekey` mode that places page numbers before the citekey (e.g. `\autocite[p. 42]{Grieser2020}`). Page numbers are not meaningful for wikilinks, tags, and bare citekeys.
 </Note>
 
 ## Format Examples

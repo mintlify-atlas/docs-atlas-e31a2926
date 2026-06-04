@@ -56,7 +56,7 @@ The following fields are parsed from each `.bib` entry and used for search match
 | `url` | Opened with `⌃↵`; copied with `⌘C`; used for QuickLook preview |
 | `doi` | When no `url` is present, generates `https://doi.org/{doi}` as the URL |
 | `abstract` | Shown in Alfred's Large Type view (`⌘L`) together with title and keywords |
-| `keywords` | Searchable with the `#` prefix (e.g., `#sociology`); count shown as `n 🏷` |
+| `keywords` | Searchable with the `#` prefix (e.g., `#sociology`); count shown as `🏷 n` |
 | `file` | Path to an attachment; opened with `⌃⌥⌘↵` |
 | `local-url` | Alternate attachment field (Bookends-style); used identically to `file` |
 | `attachment` | Alternate attachment field; used identically to `file` |
@@ -73,7 +73,7 @@ Each entry in the Alfred result list is rendered as:
 
 ```
 [Title, truncated to alfred_bar_width]
-[Names] [Year]   In: [Journal/Booktitle]   [🌐] [📄] [n 🏷] [📓] [📕] [📎]
+[Names] [Year]   In: [Journal/Booktitle]   [🌐] [📓] [📕] [📄] [🏷 n] [📎]
 ```
 
 ### Icon meanings
@@ -81,12 +81,12 @@ Each entry in the Alfred result list is rendered as:
 | Icon | Meaning |
 |---|---|
 | 🌐 | Entry has a URL or DOI |
-| 📄 | Entry has an abstract |
-| n 🏷 | Entry has n keywords (tags) |
 | 📓 | Entry has a literature note in the configured folder |
 | 📕 | Entry has a PDF in the configured folder |
+| 📄 | Entry has an abstract |
+| 🏷 n | Entry has n keywords (tags) |
 | 📎 | Entry has a `file`, `local-url`, or `attachment` field |
-| 2️⃣ | Entry comes from the secondary library |
+| 2️⃣ | Entry comes from the secondary library (prefix on title) |
 
 ### Author and editor display
 

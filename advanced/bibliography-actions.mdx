@@ -1,12 +1,12 @@
 ---
-title: "Paste Formatted Bibliographies and Manage Entries"
+title: "Paste Formatted Bibliographies and Manage BibTeX Entries"
 sidebarTitle: "Bibliography Actions"
-description: "Paste single formatted references or full bibliographic entries using Pandoc and any CSL style, and reveal or delete entries from your BibTeX file."
+description: "Paste a full formatted bibliographic entry via Pandoc and any CSL style, reveal entries in your editor, delete entries with backup, and open attachments."
 ---
 
 Beyond inserting citekeys, the Supercharged Citation Picker lets you paste fully rendered bibliographic text and manage entries directly — all without leaving Alfred.
 
-## Paste Formatted Single Entry
+## Paste Full Bibliography
 
 **Keyboard shortcut:** `⌘⌥↵`
 
@@ -17,21 +17,20 @@ Grieser, C. (2023). Supercharged Citation Picker [Computer software].
 https://github.com/chrisgrieser/alfred-bibtex-citation-picker
 ```
 
-How it works under the hood: the script builds a minimal Markdown document with `suppress-bibliography: true` and pipes it through `pandoc --citeproc`, producing only the inline citation text, then pastes the result.
+How it works under the hood: the script builds a minimal Markdown document using `nocite` front matter and pipes it through `pandoc --citeproc`, which produces a standalone references-section output rather than an inline citation.
 
 **Requirements and configuration:**
 
 - [Pandoc](https://pandoc.org/installing.html) must be installed and available on `PATH`.
 - The citation style is controlled by the `csl_for_pandoc` workflow variable. Set it to the path of any `.csl` file. If the path is unset or the file is missing, the bundled **APA 7th edition** style (`./support/apa-7th.csl`) is used as a fallback.
-- You can also select **"Formatted single entry"** as your active citation format via `scp` → **Change citation format**. When this format is active, pressing the standard `↵` key pastes the formatted reference instead of a citekey.
 
-## Paste Full Bibliography
+## Paste Formatted Single Entry
 
-Also triggered with `⌘⌥↵` when the citation format is set to **"Formatted single entry"** for a whole-bibliography render.
+When the citation format is set to **"Formatted single entry"** (selectable via `scp` → **Change citation format**), pressing the standard `↵` key pastes a formatted inline citation instead of a citekey.
 
-The full-bibliography variant uses `nocite` front matter so Pandoc outputs a standalone references section rather than an inline citation, giving you the complete formatted reference block for the entry as it would appear at the end of a document.
+How it works: the script builds a minimal Markdown document with `suppress-bibliography: true` and pipes it through `pandoc --citeproc`, producing only the inline citation text.
 
-Both scripts share the same CSL and library configuration, so whichever `.csl` file you have set in `csl_for_pandoc` applies consistently to both outputs.
+Both the `⌘⌥↵` full bibliography and the formatted-single-entry citation format share the same CSL and library configuration, so whichever `.csl` file you have set in `csl_for_pandoc` applies consistently to both outputs.
 
 <Note>
   Pandoc must be installed for both formatted-output features to work. Download it at [pandoc.org/installing.html](https://pandoc.org/installing.html). The workflow adds `/usr/local/bin` and `/opt/homebrew/bin` to `PATH` automatically, so a standard Homebrew install is detected without extra configuration.
@@ -82,8 +81,8 @@ Opens the entry's URL (or DOI URL, if no direct URL is present) in a macOS Quick
 
 **Keyboard shortcut:** `⌃⌥⌘↵`
 
-Opens the file referenced in the BibTeX entry's `file`, `local-url`, or `attachment` field using the system default app. The workflow decodes percent-encoded URIs, strips `file://localhost` prefixes, expands `~`, and validates that the file exists before attempting to open it.
+Opens the file referenced in the BibTeX entry's `file`, `local-url`, or `attachment` field using the system default app. The workflow decodes percent-encoded URIs, strips `file://` and `file://localhost` prefixes, expands `~`, and validates that the file exists before attempting to open it.
 
-If multiple attachments are listed in the field (separated by `;`), only the **first** attachment is opened.
+If multiple attachments are listed in the field, only the **first** attachment is opened.
 
 The `📎` icon in the picker indicates that an entry has an attachment field set. This is separate from the `📕` PDF indicator, which tracks PDFs managed by the [auto-file feature](/advanced/pdf-management).

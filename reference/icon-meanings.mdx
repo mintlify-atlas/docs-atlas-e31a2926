@@ -1,7 +1,7 @@
 ---
-title: "Icon Reference: What Each Symbol Means in the Citation Picker"
+title: "What Each Icon Means in the Supercharged Citation Picker"
 sidebarTitle: "Icon Meanings"
-description: "Complete reference of emoji indicators shown next to entries in the citation picker, including URL, abstract, keywords, literature note, PDF, attachment, and library icons."
+description: "Reference for all emoji indicators in the citation picker: URL, abstract, keywords, literature note, PDF, attachment, and library icons."
 ---
 
 Each entry in the picker displays a row of emoji indicators in its subtitle line. These indicators help you quickly see what resources and metadata are available for each reference — at a glance, without opening the entry.
@@ -20,20 +20,20 @@ Author(s) Year   [collection info]   [emojis joined by spaces]
 
 For example:
 ```
-Grieser et al. 2023    In: Annual Review of Sociology 49(1)   🌐 📄 3 🏷 📓 📕
+Grieser et al. 2023    In: Annual Review of Sociology 49(1)   🌐 📓 📕 📄 🏷 3 📎
 ```
 
-The emoji section at the end is built from the following indicators:
+The emoji section at the end is built from the following indicators, in this order:
 
 | Emoji | Meaning | When shown |
 |-------|---------|------------|
 | 🌐 | URL or DOI available | Entry has a `url` field, or a `doi` field (used to construct `https://doi.org/…`) |
-| 📄 | Abstract available | Entry has a non-empty `abstract` field |
-| n 🏷 | n Keywords | Entry has a `keywords` field; n is the count of comma-separated tags (e.g., `3 🏷`) |
 | 📓 | Literature note exists | A `.md` file named exactly like the citekey exists in the configured `literature_note_folder` |
 | 📕 | PDF available | A file named `{citekey}.pdf` or `{citekey}_{anything}.pdf` exists in the configured `pdf_folder` |
-| 2️⃣ | From second library | Entry comes from the secondary `.bib` file configured in `secondary_library_path` |
+| 📄 | Abstract available | Entry has a non-empty `abstract` field |
+| 🏷 n | n Keywords | Entry has a `keywords` field; n is the count of comma-separated tags (e.g., `🏷 3`) |
 | 📎 | Attachment field present | The BibTeX entry contains a `file`, `local-url`, or `attachment` field |
+| 2️⃣ | From second library | Prefixed to the **title** (not the emoji row) for entries from `secondary_library_path` |
 
 <Note>
 The `📕` indicator is only shown for PDFs discovered in the dedicated `pdf_folder` — files filed by citekey. The `📎` indicator covers attachments referenced directly inside the BibTeX entry's own fields. An entry can show both if it has both.
